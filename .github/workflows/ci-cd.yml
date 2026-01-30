@@ -29,6 +29,10 @@ jobs:
 
       - name: Build & Test
         run: mvn clean verify
+        env:
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
       - name: Docker login
         uses: docker/login-action@v2
@@ -38,6 +42,10 @@ jobs:
 
       - name: Build Docker image with cache
         run: docker build --cache-from ${{ secrets.DOCKER_USERNAME }}/learnconfigs --tag learnconfigs .
+        env:
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
       - name: Tag Docker image
         run: docker tag learnconfigs ${{ secrets.DOCKER_USERNAME }}/learnconfigs:latest
